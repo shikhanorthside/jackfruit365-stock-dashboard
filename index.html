@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jackfruit365 · Stock Location &amp; Sales | NorthSide</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;font-family:'Inter',sans-serif;overflow:hidden}
+#root{display:flex;height:100vh;background:#f0f2f5}
+#sb{width:236px;min-width:236px;background:#111111;display:flex;flex-direction:column;box-shadow:2px 0 12px rgba(0,0,0,.25)}
+.sb-logo{padding:24px 20px 20px;border-bottom:1px solid rgba(255,255,255,.08)}
+.sb-logo .bar{width:80px;height:2px;background:#00c9a7;margin:0 auto 16px;opacity:.8}
+.sb-logo img{display:block;max-width:150px;height:auto;margin:0 auto}
+.sb-divider{font-size:9px;font-weight:700;color:rgba(255,255,255,.2);text-transform:uppercase;letter-spacing:1.4px;padding:16px 20px 6px}
+.nav-item{display:flex;align-items:center;gap:11px;padding:11px 20px;color:rgba(255,255,255,.5);font-size:12.5px;font-weight:500;cursor:pointer;transition:all .15s;border-left:3px solid transparent;user-select:none;background:none;border-top:0;border-right:0;border-bottom:0;width:100%;text-align:left;font-family:inherit}
+.nav-item:hover{color:rgba(255,255,255,.8);background:rgba(255,255,255,.05)}
+.nav-item.active{color:#00c9a7;border-left-color:#00c9a7;background:rgba(0,201,167,.07)}
+.ni{width:14px;text-align:center;font-size:12px;flex-shrink:0}
+.sb-foot{margin-top:auto;padding:16px 20px;border-top:1px solid rgba(255,255,255,.07)}
+.sf-l{font-size:9px;font-weight:700;color:rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:.9px;margin-bottom:3px}
+.sf-v{font-size:11px;color:rgba(255,255,255,.5);margin-bottom:9px}
+.sf-conf{display:inline-block;font-size:8px;font-weight:700;letter-spacing:2.5px;color:rgba(255,255,255,.25);border:1px solid rgba(255,255,255,.12);border-radius:3px;padding:2px 7px;text-transform:uppercase}
+#main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+.bbar{background:#1a1a1a;padding:13px 28px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;border-bottom:2px solid #00c9a7;gap:16px}
+.bb-name{color:#fff;font-size:15px;font-weight:800;letter-spacing:.9px}
+.bb-sub{color:rgba(255,255,255,.45);font-size:11px;margin-top:2px}
+.bb-r{text-align:right}
+.bb-period{color:#00c9a7;font-size:12.5px;font-weight:700}
+.bb-conf{color:rgba(255,255,255,.25);font-size:9px;letter-spacing:2.5px;text-transform:uppercase;margin-top:3px}
+.panels{flex:1;overflow-y:auto;padding:26px 28px 48px}
+.panel{display:none;max-width:1180px}.panel.active{display:block}
+.eyebrow{font-size:10px;font-weight:700;color:#00a88a;text-transform:uppercase;letter-spacing:1.6px;margin-bottom:9px;display:flex;align-items:center;gap:10px}
+.eyebrow::after{content:'';flex:1;height:1px;background:rgba(0,201,167,.22)}
+h2{font-size:22px;font-weight:800;color:#0f172a;letter-spacing:-.4px;margin-bottom:5px}
+.sub{font-size:13px;color:#64748b;margin-bottom:22px;line-height:1.55}
+.card{background:#fff;border-radius:14px;border:1px solid rgba(0,0,0,.07);padding:22px 24px;box-shadow:0 1px 6px rgba(0,0,0,.05);margin-bottom:16px}
+.ct{font-size:10.5px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.9px;margin-bottom:14px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:16px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.kc{background:#fff;border-radius:14px;border:1px solid rgba(0,0,0,.07);padding:20px;box-shadow:0 1px 5px rgba(0,0,0,.05)}
+.kl{font-size:10px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.9px;margin-bottom:9px}
+.kv{font-size:28px;font-weight:800;color:#0f172a;line-height:1;letter-spacing:-.5px}
+.kv small{font-size:14px;color:#94a3b8;font-weight:700;margin:0 4px}
+.kv.teal{color:#00a88a}.kv.red,.kv .red{color:#b91c1c}
+.km{margin-top:10px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.b{display:inline-flex;align-items:center;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap}
+.b-grn{background:#dcfce7;color:#15803d}.b-teal{background:rgba(0,201,167,.12);color:#047857}
+.b-blu{background:#dbeafe;color:#1d4ed8}.b-amb{background:#fef3c7;color:#92400e}
+.b-neu{background:#f1f5f9;color:#475569}.b-red{background:#fee2e2;color:#b91c1c}.b-pur{background:#ede9fe;color:#6d28d9}
+.ins{border-radius:12px;padding:16px 20px;margin-bottom:16px;border-left:4px solid}
+.ins-teal{background:rgba(0,201,167,.06);border-color:#00c9a7}
+.ins-blu{background:#eff6ff;border-color:#3b82f6}
+.ins-gold{background:#fffbeb;border-color:#d97706}
+.ins-red{background:#fef2f2;border-color:#dc2626}
+.ins-pur{background:#faf5ff;border-color:#8b5cf6}
+.il{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.9px;opacity:.6;margin-bottom:5px;color:#0f172a}
+.it{font-size:13px;line-height:1.65;color:#1e293b}
+.it strong{font-weight:700;color:#0f172a}
+.it .big{font-size:18px;font-weight:800;color:#00a88a}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{text-align:left;font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.7px;padding:9px 10px;border-bottom:2px solid #e2e8f0;background:#f8fafc;white-space:nowrap}
+td{padding:10px;border-bottom:1px solid #f1f5f9;color:#1e293b;vertical-align:middle}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+tr.tot td{font-weight:800;background:#f8fafc;border-top:2px solid #e2e8f0}
+.zn{font-weight:700;color:#0f172a}.zs{display:block;font-size:11px;color:#94a3b8;font-weight:500;margin-top:1px}
+.tw{overflow-x:auto}
+th.grp{text-align:center;font-size:11px;color:#0f172a;letter-spacing:1px;border-bottom:1px solid #e2e8f0}
+th.g4h{background:#eef3fd}th.g8h{background:#e9f8f4}
+.sep{border-left:2px solid #e2e8f0}
+.legend{display:flex;gap:18px;flex-wrap:wrap;font-size:12px;color:#475569;margin-bottom:12px}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.sw{width:12px;height:12px;border-radius:3px;display:inline-block}
+.chart{position:relative}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.tip{position:absolute;pointer-events:none;background:#0f172a;color:#fff;font-size:12px;padding:8px 10px;border-radius:8px;box-shadow:0 4px 14px rgba(0,0,0,.2);opacity:0;transition:opacity .1s;white-space:nowrap;z-index:5}
+.tip b{color:#5eead4}
+.hbar{display:grid;grid-template-columns:170px 1fr;gap:10px;align-items:center;margin-bottom:12px}
+.hbar .lab{font-size:12.5px;font-weight:700;color:#0f172a;line-height:1.25}
+.hbar .lab small{display:block;font-weight:500;color:#94a3b8;font-size:11px}
+.bars{display:flex;flex-direction:column;gap:3px}
+.brow{display:flex;align-items:center;gap:8px;font-size:11.5px;color:#334155;font-variant-numeric:tabular-nums}
+.bfill{height:14px;border-radius:0 4px 4px 0;min-width:2px}
+.gaph,.gaprow{display:grid;grid-template-columns:170px 1fr 1fr;gap:18px;align-items:center}
+.gaph{margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid #e2e8f0}
+.gh{font-size:10.5px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.8px}
+.gaprow{padding:9px 0;border-bottom:1px solid #f1f5f9}
+.gaprow:last-child{border-bottom:0}
+.gaprow .lab{font-size:12.5px;font-weight:700;color:#0f172a;line-height:1.25}
+.gaprow .lab small{display:block;font-weight:500;color:#94a3b8;font-size:11px}
+.gcell{display:grid;grid-template-columns:1fr 118px;gap:8px;align-items:center}
+.gb{text-align:right}
+.alert{background:#7f1d1d;color:#fff;font-size:12.5px;padding:9px 28px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;flex-shrink:0}
+.alert strong{background:#dc2626;padding:3px 9px;border-radius:4px;letter-spacing:1.2px;font-size:11px}
+.alert b{color:#fecaca}
+.al-dot{width:9px;height:9px;border-radius:50%;background:#f87171;box-shadow:0 0 0 0 rgba(248,113,113,.7);animation:pulse 1.6s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(248,113,113,.7)}70%{box-shadow:0 0 0 10px rgba(248,113,113,0)}100%{box-shadow:0 0 0 0 rgba(248,113,113,0)}}
+@media (prefers-reduced-motion:reduce){.al-dot{animation:none}}
+.kc-red{border:1px solid #fca5a5;background:#fff5f5;border-top:4px solid #dc2626}
+.crit{border-left-width:6px}
+.ins-red.crit .it{font-size:14px}
+.red-eb{color:#dc2626}.red-eb::after{background:rgba(220,38,38,.25)}
+.nav-item.alertnav{color:#fca5a5}.nav-item.alertnav.active{color:#f87171;border-left-color:#f87171;background:rgba(248,113,113,.1)}
+.grow{display:grid;grid-template-columns:170px 1fr 230px;gap:14px;align-items:center;padding:10px 0;border-bottom:1px solid #f1f5f9}
+.grow:last-child{border-bottom:0}
+.grow .lab{font-size:12.5px;font-weight:700;color:#0f172a;line-height:1.25}
+.grow .lab small{display:block;font-weight:500;color:#94a3b8;font-size:11px}
+.gtrack{position:relative;height:22px;background:#fecaca;border:1px solid #dc2626;border-radius:4px;overflow:hidden}
+.gtrack.ok{background:#f1f5f9;border-color:#cbd5e1}
+.gfill{position:absolute;left:0;top:0;bottom:0;background:#00a88a}
+.gnums{font-size:12px;color:#334155;font-variant-numeric:tabular-nums;line-height:1.35}
+.gnums .short{color:#b91c1c;font-weight:800;font-size:14px}
+.gnums .extra{color:#6d28d9;font-weight:800;font-size:14px}
+.chg{display:grid;grid-template-columns:170px 1fr;gap:10px;align-items:center;margin-bottom:10px}
+.chg .lab{font-size:12.5px;font-weight:700;color:#0f172a}
+.cbar{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;font-variant-numeric:tabular-nums;color:#334155}
+.cfill{height:16px;border-radius:0 4px 4px 0}
+.step{display:flex;gap:16px;align-items:flex-start;padding:16px 0;border-bottom:1px solid #f1f5f9}
+.step:last-child{border-bottom:0}
+.sn{width:30px;height:30px;border-radius:50%;background:#00c9a7;color:#0f172a;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.st{font-size:14px;font-weight:800;color:#0f172a;margin-bottom:4px}
+.sd{font-size:13px;color:#334155;line-height:1.6}
+.foot{font-size:11px;color:#94a3b8;line-height:1.6;margin-top:6px}
+.stat{font-weight:700}
+.pill-row{display:flex;gap:8px;flex-wrap:wrap}
+@media (max-width:900px){
+ html,body{overflow:auto;height:auto;background:#f0f2f5}
+ #root{flex-direction:column;height:auto;min-height:100vh}
+ #sb{width:100%;min-width:0}
+ .sb-nav{display:flex;overflow-x:auto}
+ .sb-divider,.sb-foot{display:none}
+ .nav-item{border-left:0;border-bottom:3px solid transparent;white-space:nowrap;width:auto}
+ .nav-item.active{border-bottom-color:#00c9a7}
+ .sb-logo{padding:14px 16px}
+ .panels{padding:18px 16px 40px;overflow:visible}
+ #main{overflow:visible}
+ .bbar{padding:12px 16px;flex-wrap:wrap}
+ .g3,.g4,.g2{grid-template-columns:1fr 1fr}
+ .hbar{grid-template-columns:1fr}
+ .grow{grid-template-columns:1fr}
+ .chg{grid-template-columns:1fr}
+ .alert{padding:9px 16px}
+ .gaph{display:none}
+ .gaprow{grid-template-columns:1fr;gap:6px}
+ .gcell{grid-template-columns:1fr 112px}
+ .gcell::before{content:attr(data-p);grid-column:1/-1;font-size:10px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.8px}
+}
+@media (max-width:560px){.g3,.g4,.g2{grid-template-columns:1fr}.kv{font-size:24px}}
+</style>
+</head>
+<body>
+<div id="root">
+<nav id="sb">
+  <div class="sb-logo"><div class="bar"></div><img src="data:image/png;base64,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" alt="NorthSide"></div>
+  <div class="sb-divider">Dashboard</div>
+  <div class="sb-nav">
+    <button class="nav-item active" data-p="p1"><span class="ni">◼</span>Summary</button>
+    <button class="nav-item alertnav" data-p="pg"><span class="ni">⚠</span>Stock Gap</button>
+    <button class="nav-item" data-p="pa"><span class="ni">✓</span>Ads vs Stock</button>
+    <button class="nav-item" data-p="p2"><span class="ni">◆</span>Orders by Region</button>
+    <button class="nav-item" data-p="p3"><span class="ni">▦</span>Stock vs Orders</button>
+    <button class="nav-item" data-p="p4"><span class="ni">➜</span>Action Plan</button>
+  </div>
+  <div class="sb-foot">
+    <div class="sf-l">Client</div><div class="sf-v">Jackfruit365</div>
+    <div class="sf-l">Period</div><div class="sf-v">Mar 1 – Oct 25, 2026</div>
+    <div class="sf-l">Prepared by</div><div class="sf-v">NorthSide</div>
+    <div class="sf-conf">Confidential</div>
+  </div>
+</nav>
+<main id="main">
+  <div class="bbar">
+    <div><div class="bb-name">JACKFRUIT365</div><div class="bb-sub">Amazon · Stock Location &amp; Sales Review · Mar–Oct 2026</div></div>
+    <div class="bb-r"><div class="bb-period">Mar–Jul vs Aug · Sep · Oct MTD</div><div class="bb-conf">Confidential · NorthSide</div></div>
+  </div>
+  <div class="alert"><span class="al-dot"></span><strong>STOCK ALERT</strong><span>Maharashtra has <b>4</b> units of 800g left (0.2 days) · Hyderabad <b>10</b> (0.6 days) · Bengaluru <b>74</b> (5 days) · <b>2,640</b> units stuck in Tamil Nadu, 0 shipped since 1 Sep</span></div>
+  <div class="panels">
+
+  <!-- ============ SUMMARY ============ -->
+  <section class="panel active" id="p1">
+    <div class="eyebrow">Summary</div>
+    <p class="sub">Amazon orders, Mar–Jul average vs August, September and October to date (1–25 Oct) · stock as of 25 Oct 2026</p>
+
+    <div class="ins ins-red crit">
+      <div class="il">The main issue</div>
+      <div class="it">Our biggest regions, <strong>Maharashtra, Hyderabad and Bengaluru (56% of all orders)</strong>, have almost no 800g stock left nearby, while <strong>2,640 units sit unsold in Tamil Nadu warehouses</strong> that have not shipped a single order since 1 Sep. Buyers there now get slower delivery from far away, and fewer of them buy. Orders fell from <strong>154 to 96 a day</strong>.</div>
+    </div>
+
+    <div class="g4">
+      <div class="kc kc-red"><div class="kl">Units short in buyer regions</div><div class="kv red">3,513</div><div class="km"><span class="b b-red">1,408 × 400g · 2,105 × 800g</span></div></div>
+      <div class="kc kc-red"><div class="kl">800g left in Maharashtra</div><div class="kv red">4 units</div><div class="km"><span class="b b-red">0.2 days of orders</span><span class="b b-neu">22% of buyers</span></div></div>
+      <div class="kc kc-red"><div class="kl">Stock stuck in Tamil Nadu</div><div class="kv red">2,640</div><div class="km"><span class="b b-red">0 shipped since 1 Sep</span><span class="b b-neu">63% of all stock</span></div></div>
+      <div class="kc"><div class="kl">Orders per day</div><div class="kv">154<small>→</small><span class="red">96</span></div><div class="km"><span class="b b-red">−38%</span><span class="b b-neu">Mar–Jul → Oct</span></div></div>
+    </div>
+
+    <div class="card">
+      <div class="ct">Orders per day, by month</div>
+      <div class="chart" id="c1"></div>
+      <div class="foot">October = 1–25 Oct. Hover a bar for the exact numbers.</div>
+    </div>
+
+    <div class="g3">
+      <div class="ins ins-red" style="margin:0"><div class="il">What changed</div><div class="it">Until July each big region had stock close by. From August, <strong>Maharashtra and Hyderabad ran out</strong>, and new stock went to <strong>Coimbatore (Tamil Nadu)</strong>, which has not shipped any orders since 1 Sep.</div></div>
+      <div class="ins ins-red" style="margin:0"><div class="il">Where it hurt</div><div class="it">Regions that lost nearby stock: <strong>Hyderabad −56%</strong>, <strong>Maharashtra −42%</strong>, <strong>Tamil Nadu −40%</strong>, <strong>Bengaluru −37%</strong>.</div></div>
+      <div class="ins ins-teal" style="margin:0"><div class="il">Ads are still working</div><div class="it">The same ads run all over India. Regions whose stock did not change fell only <strong>14–21%</strong>, and October ads returned <strong>11.5x</strong> total ROAS (target 9x). See <em>Ads vs Stock</em>.</div></div>
+    </div>
+  </section>
+
+  <!-- ============ STOCK GAP ============ -->
+  <section class="panel" id="pg">
+    <div class="eyebrow red-eb">Stock Gap · Critical</div>
+    <h2>3,513 units short where the buyers are</h2>
+    <p class="sub">Stock needed for 30 days of normal orders vs stock available on 25 Oct 2026, by region</p>
+
+    <div class="g4">
+      <div class="kc kc-red"><div class="kl">400g short</div><div class="kv red">1,408</div><div class="km"><span class="b b-neu">in 5 regions</span></div></div>
+      <div class="kc kc-red"><div class="kl">800g short</div><div class="kv red">2,105</div><div class="km"><span class="b b-neu">in 5 regions</span></div></div>
+      <div class="kc"><div class="kl">Extra stock (wrong place)</div><div class="kv" style="color:#6d28d9">2,481</div><div class="km"><span class="b b-pur">Tamil Nadu &amp; Kerala</span></div></div>
+      <div class="kc kc-red"><div class="kl">800g new stock needed</div><div class="kv red">1,144</div><div class="km"><span class="b b-neu">even after moving all extra</span></div></div>
+    </div>
+
+    <div class="card">
+      <div class="ct">800g · stock needed vs stock available (30 days)</div>
+      <div class="legend"><span><i class="sw" style="background:#00a88a"></i>Stock available</span><span><i class="sw" style="background:#fecaca;border:1px solid #dc2626"></i>Gap (short)</span><span><span class="b b-pur">Extra</span> more than needed (wrong place)</span></div>
+      <div id="gap8"></div>
+    </div>
+    <div class="card">
+      <div class="ct">400g · stock needed vs stock available (30 days)</div>
+      <div class="legend"><span><i class="sw" style="background:#00a88a"></i>Stock available</span><span><i class="sw" style="background:#fecaca;border:1px solid #dc2626"></i>Gap (short)</span><span><span class="b b-pur">Extra</span> more than needed (wrong place)</span></div>
+      <div id="gap4"></div>
+    </div>
+    <p class="foot">Needed = 30 × normal orders per day (Mar–Jul average) for the region. Available = sellable Amazon stock in the region's warehouses on 25 Oct. North &amp; Central and East India have no warehouse holding our stock.</p>
+  </section>
+
+  <!-- ============ ADS VS STOCK ============ -->
+  <section class="panel" id="pa">
+    <div class="eyebrow">Ads vs Stock</div>
+    <h2>The ads are working. The stock is not where it needs to be.</h2>
+    <p class="sub">Same campaigns, all of India · what made the difference was nearby stock</p>
+
+    <div class="g3">
+      <div class="kc"><div class="kl">Total ROAS · October (1–25)</div><div class="kv teal">11.5x</div><div class="km"><span class="b b-grn">Above 9x target</span></div></div>
+      <div class="kc kc-red"><div class="kl">Regions that lost nearby stock</div><div class="kv red">−37% to −56%</div><div class="km"><span class="b b-neu">orders, Oct vs Mar–Jul</span></div></div>
+      <div class="kc"><div class="kl">Regions with no stock change</div><div class="kv">−14% to −21%</div><div class="km"><span class="b b-neu">same ads, same period</span></div></div>
+    </div>
+
+    <div class="card">
+      <div class="ct">Change in orders per day, October vs Mar–Jul, by region</div>
+      <div class="legend"><span><i class="sw" style="background:#dc2626"></i>Lost nearby stock</span><span><i class="sw" style="background:#64748b"></i>Never had nearby stock (no change)</span><span><i class="sw" style="background:#00a88a"></i>Gained nearby stock</span></div>
+      <div id="cA"></div>
+    </div>
+
+    <div class="ins ins-blu">
+      <div class="il">Why this points to stock, not ads</div>
+      <div class="it">Our campaigns target buyers across all of India in the same way. If the ads had stopped working, every region would have dropped by a similar amount. Instead, the drop is <strong>about 2–3 times bigger</strong> exactly where buyers lost their nearby stock. Kerala, the only region that <strong>gained</strong> nearby stock, fell only 18%. Ads bring the buyer to the product page; when delivery is slow because stock is far away, fewer of them buy.</div>
+    </div>
+  </section>
+
+  <!-- ============ ORDERS BY REGION ============ -->
+  <section class="panel" id="p2">
+    <div class="eyebrow">Orders by Region</div>
+    <h2>Where our buyers are, and how their orders changed</h2>
+    <p class="sub">Orders per day by the buyer's delivery state · Mar–Jul average vs October 1–25</p>
+
+    <div class="card">
+      <div class="ct">Orders per day · Mar–Jul vs October</div>
+      <div class="legend"><span><i class="sw" style="background:#3b6fd8"></i>Mar–Jul average</span><span><i class="sw" style="background:#00a88a"></i>October (1–25)</span></div>
+      <div id="c2"></div>
+    </div>
+
+    <div class="card">
+      <div class="ct">Orders per day and share sent from a nearby warehouse</div>
+      <div class="tw"><table>
+        <thead><tr><th>Buyer region</th><th class="n">Mar–Jul</th><th class="n">Aug</th><th class="n">Sep</th><th class="n">Oct (1–25)</th><th class="n">Change</th><th class="n">Sent from nearby · Mar–Jul</th><th class="n">Sent from nearby · Oct</th></tr></thead>
+        <tbody id="t2"></tbody>
+      </table></div>
+      <div class="foot">"Sent from nearby" = share of the region's orders shipped from an Amazon warehouse in the same region. North and East India have no warehouse holding our stock, so their orders always travel far.</div>
+    </div>
+  </section>
+
+  <!-- ============ STOCK VS ORDERS ============ -->
+  <section class="panel" id="p3">
+    <div class="eyebrow">Stock vs Orders</div>
+    <h2>Stock is not where the orders are</h2>
+    <p class="sub">Each region's share of all orders vs its share of all Amazon stock · Mar–Jul (normal months) compared with October</p>
+
+    <div class="g3">
+      <div class="kc"><div class="kl">Stock placed where the orders are</div><div class="kv">70%<small>→</small><span class="red">38%</span></div><div class="km"><span class="b b-neu">Mar–Jul → Oct</span></div></div>
+      <div class="kc"><div class="kl">Tamil Nadu · Oct</div><div class="kv"><span class="red">63%</span><small>of stock</small></div><div class="km"><span class="b b-neu">for 10% of orders</span></div></div>
+      <div class="kc"><div class="kl">Maharashtra · Oct</div><div class="kv"><span class="red">4%</span><small>of stock</small></div><div class="km"><span class="b b-neu">for 22% of orders</span></div></div>
+    </div>
+    <div class="foot" style="margin:-6px 0 16px">"Stock placed where the orders are": if every region's share of stock matched its share of orders, this would be 100%.</div>
+
+    <div class="card">
+      <div class="ct">Share of orders vs share of stock · Mar–Jul and October</div>
+      <div class="legend"><span><i class="sw" style="background:#3b6fd8"></i>Share of orders</span><span><i class="sw" style="background:#00a88a"></i>Share of stock</span><span><span class="b b-red">Short</span> stock below orders by 5+ pts</span><span><span class="b b-pur">Extra</span> stock above orders by 5+ pts</span><span><span class="b b-grn">Balanced</span></span></div>
+      <div class="gaph"><div></div><div class="gh">Mar–Jul (avg month-end stock)</div><div class="gh">October (stock on 25 Oct)</div></div>
+      <div id="c3"></div>
+    </div>
+
+    <div class="ins ins-gold">
+      <div class="il">How to read this</div>
+      <div class="it">In <strong>Mar–Jul</strong> stock roughly followed orders: the big regions (Maharashtra, Hyderabad, Bengaluru) each had a fair share of stock nearby. In <strong>October</strong> the picture flipped: <strong>Tamil Nadu holds 63% of the stock for 10% of orders</strong>, while Maharashtra, Hyderabad and Bengaluru together hold 20% of the stock for 56% of orders. North and East India have never had stock nearby.</div>
+    </div>
+
+    <div class="card">
+      <div class="ct">Orders, stock and days of stock in each region · 400g and 800g</div>
+      <div class="tw"><table>
+        <thead>
+          <tr><th rowspan="2" style="vertical-align:bottom">Region</th><th colspan="5" class="grp g4h">400g</th><th colspan="5" class="grp g8h sep">800g</th></tr>
+          <tr><th class="n">Orders / day<br>Mar–Jul</th><th class="n">Orders / day<br>Oct</th><th class="n">Stock<br>25 Oct</th><th class="n">Days of<br>stock</th><th>Status</th>
+              <th class="n sep">Orders / day<br>Mar–Jul</th><th class="n">Orders / day<br>Oct</th><th class="n">Stock<br>25 Oct</th><th class="n">Days of<br>stock</th><th>Status</th></tr>
+        </thead>
+        <tbody id="t3"></tbody>
+      </table></div>
+      <div class="foot">Orders / day = units ordered per day by buyers in the region. Days of stock = stock on 25 Oct ÷ normal orders per day (Mar–Jul average). Status: under 7 days Critical · 7–15 Low · 15–60 OK · over 60 Excess.</div>
+    </div>
+  </section>
+
+  <!-- ============ ACTION PLAN ============ -->
+  <section class="panel" id="p4">
+    <div class="eyebrow">Action Plan</div>
+    <h2>Bring stock back close to our buyers</h2>
+    <p class="sub">Target: 30 days of stock in every region, starting with the biggest ones</p>
+
+    <div class="g3">
+      <div class="kc"><div class="kl">400g · move between warehouses</div><div class="kv teal">~1,400</div><div class="km"><span class="b b-grn">No new 400g stock needed</span></div></div>
+      <div class="kc"><div class="kl">800g · move between warehouses</div><div class="kv teal">~960</div><div class="km"><span class="b b-neu">From Tamil Nadu &amp; Kerala</span></div></div>
+      <div class="kc"><div class="kl">800g · new stock to send</div><div class="kv red">~1,140</div><div class="km"><span class="b b-amb">Total 800g covers ~17 days</span></div></div>
+    </div>
+
+    <div class="card">
+      <div class="step"><div class="sn">1</div><div><div class="st">Release the Coimbatore &amp; Chennai stock</div><div class="sd">About 2,600 units sit in CJB1 (Coimbatore) and MAA4 (Chennai) and have not shipped since 1 Sep. Raise a case with Amazon to make them available and move them to <strong>Bengaluru, Hyderabad and Maharashtra</strong>.</div></div></div>
+      <div class="step"><div class="sn">2</div><div><div class="st">Send the next 800g shipment to the big regions</div><div class="sd">Around <strong>1,140 new units of 800g</strong>, split across <strong>Maharashtra (Mumbai / Pune), Hyderabad and Bengaluru</strong>. Maharashtra and Hyderabad each have less than a day of 800g left.</div></div></div>
+      <div class="step"><div class="sn">3</div><div><div class="st">Keep Kerala stocked meanwhile</div><div class="sd">The Kerala warehouse is currently sending about two-thirds of all orders across India. Keep it stocked until the other regions are refilled, so orders don't stop.</div></div></div>
+      <div class="step"><div class="sn">4</div><div><div class="st">Add a North India warehouse</div><div class="sd">About <strong>15–19% of orders</strong> come from North and Central India, with no stock nearby. Stock in a Delhi NCR warehouse (e.g. Gurugram) would shorten their delivery.</div></div></div>
+    </div>
+
+    <div class="ins ins-teal">
+      <div class="il">What to watch</div>
+      <div class="it">Each week we will track <strong>orders per day by region</strong> and the <strong>share sent from a nearby warehouse</strong>. As stock returns to Maharashtra, Hyderabad and Bengaluru, both should move back towards the Mar–Jul levels (154 orders a day, 54% sent from nearby).</div>
+    </div>
+    <p class="foot">Source: Amazon Seller Central (Customer Shipment Sales and Inventory Ledger), 1 Mar – 25 Oct 2026. Orders = shipped orders (cancelled orders excluded). Regions by delivery state: Maharashtra incl. Gujarat &amp; Goa; Hyderabad = Telangana &amp; Andhra Pradesh; Tamil Nadu incl. Puducherry; North = North &amp; Central India; East incl. North-East.</p>
+  </section>
+
+  </div>
+</main>
+</div>
+
+<script>
+const BLUE='#3b6fd8', TEAL='#00a88a';
+// ---- data (Amazon Seller Central, 1 Mar – 25 Oct 2026) ----
+const months=[{m:'Mar',o:144.1,s:61863},{m:'Apr',o:139.5,s:60133},{m:'May',o:143.4,s:63293},{m:'Jun',o:190.7,s:81733},{m:'Jul',o:153.9,s:68939},{m:'Aug',o:120.4,s:52219},{m:'Sep',o:91.6,s:41425},{m:'Oct*',o:95.8,s:42743}];
+const zones=[
+ {z:'Maharashtra',ch:-42,sub:'Mumbai · Pune · Gujarat · Goa',mj:36.7,aug:26.4,sep:21.3,oct:21.3,lmj:60,loct:15.3,os:22,ss:4},
+ {z:'Hyderabad',ch:-56,sub:'Telangana · Andhra Pradesh',mj:32.8,aug:27.1,sep:17.5,oct:14.3,lmj:70,loct:16.3,os:15,ss:7},
+ {z:'Bengaluru',ch:-37,sub:'Karnataka',mj:28.3,aug:20.9,sep:17.6,oct:17.7,lmj:90,loct:53.7,os:18,ss:9},
+ {z:'North & Central',ch:-21,sub:'Delhi NCR · UP · MP · Punjab …',mj:22.4,aug:18.6,sep:13.4,oct:17.8,lmj:null,loct:null,os:19,ss:0},
+ {z:'Tamil Nadu',ch:-40,sub:'Chennai · Coimbatore',mj:15.3,aug:11.1,sep:9.2,oct:9.1,lmj:73,loct:0.1,os:10,ss:63},
+ {z:'Kerala',ch:-18,sub:'',mj:10.4,aug:10.2,sep:8.1,oct:8.5,lmj:29,loct:94.5,os:9,ss:18},
+ {z:'East & North-East',ch:-14,sub:'Kolkata · Odisha · Bihar · Assam …',mj:8.3,aug:6.0,sep:4.4,oct:7.1,lmj:null,loct:null,os:7,ss:0}
+];
+// share of orders (count) and share of stock (both sizes): Mar–Jul = avg month-end stock; Oct = stock on 25 Oct
+const sv=[
+ {z:'Maharashtra',sub:'Mumbai · Pune · Gujarat · Goa',omj:23.8,smj:15.2,ooc:22.2,soc:3.7},
+ {z:'Hyderabad',sub:'Telangana · Andhra Pradesh',omj:21.3,smj:19.8,ooc:14.9,soc:6.7},
+ {z:'Bengaluru',sub:'Karnataka',omj:18.4,smj:31.6,ooc:18.5,soc:9.3},
+ {z:'North & Central',sub:'Delhi NCR · UP · MP · Punjab …',omj:14.5,smj:0,ooc:18.5,soc:0.0},
+ {z:'Tamil Nadu',sub:'Chennai · Coimbatore',omj:9.9,smj:22.4,ooc:9.5,soc:62.6},
+ {z:'Kerala',sub:'',omj:6.8,smj:10.9,ooc:8.9,soc:17.6},
+ {z:'East & North-East',sub:'Kolkata · Odisha · Bihar · Assam …',omj:5.4,smj:0,ooc:7.4,soc:0.0}];
+const total={mj:154.2,aug:120.4,sep:91.6,oct:95.8,lmj:54,loct:24};
+const stock=[
+ {z:'Maharashtra',n4:21.2,o4:11.1,s4:153,d4:7.2,n8:20.0,o8:11.8,s8:4,d8:0.2},
+ {z:'Hyderabad',n4:19.2,o4:8.2,s4:273,d4:14.2,n8:17.5,o8:7.6,s8:10,d8:0.6},
+ {z:'Bengaluru',n4:16.8,o4:9.6,s4:320,d4:19.0,n8:14.8,o8:10.1,s8:74,d8:5.0},
+ {z:'North & Central',n4:10.4,o4:8.4,s4:0,d4:0.0,n8:15.5,o8:12.4,s8:0,d8:0.0},
+ {z:'Tamil Nadu',n4:8.6,o4:5.4,s4:1611,d4:187.3,n8:8.8,o8:4.6,s8:1029,d8:116.9},
+ {z:'Kerala',n4:6.3,o4:5.1,s4:356,d4:56.5,n8:6.4,o8:4.6,s8:388,d8:60.6},
+ {z:'East & North-East',n4:4.2,o4:3.6,s4:0,d4:0.0,n8:5.3,o8:4.9,s8:0,d8:0.0}];
+
+// ---- nav ----
+document.querySelectorAll('.nav-item').forEach(b=>b.addEventListener('click',()=>{
+ document.querySelectorAll('.nav-item').forEach(x=>x.classList.toggle('active',x===b));
+ document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id===b.dataset.p));
+ document.querySelector('.panels').scrollTop=0;}));
+
+const fmt=(v,d=0)=>v.toLocaleString('en-IN',{minimumFractionDigits:d,maximumFractionDigits:d});
+function tipFor(host){const t=document.createElement('div');t.className='tip';host.appendChild(t);return t;}
+function showTip(t,host,ev,html){t.innerHTML=html;t.style.opacity=1;const r=host.getBoundingClientRect();let x=ev.clientX-r.left+12,y=ev.clientY-r.top-10;if(x+t.offsetWidth>r.width)x=ev.clientX-r.left-t.offsetWidth-12;t.style.left=x+'px';t.style.top=y+'px';}
+
+// ---- chart 1: monthly orders/day (single series, columns) ----
+(function(){const host=document.getElementById('c1');const W=(host.clientWidth||900)<600?440:900,H=W<600?240:260,P={l:40,r:10,t:22,b:28};const max=200;const bw=(W-P.l-P.r)/months.length;
+ let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Orders per day by month, March to October 2026">`;
+ [0,50,100,150,200].forEach(v=>{const y=P.t+(H-P.t-P.b)*(1-v/max);s+=`<line x1="${P.l}" x2="${W-P.r}" y1="${y}" y2="${y}" stroke="#eef2f6"/><text x="${P.l-8}" y="${y+4}" text-anchor="end" font-size="11" fill="#94a3b8">${v}</text>`;});
+ const avg=154.2, ya=P.t+(H-P.t-P.b)*(1-avg/max);
+ months.forEach((d,i)=>{const h=(H-P.t-P.b)*d.o/max, x=P.l+i*bw+bw*0.22, w=bw*0.56, y=H-P.b-h;const after=i>=5;
+  s+=`<path d="M${x},${H-P.b} V${y+4} Q${x},${y} ${x+4},${y} H${x+w-4} Q${x+w},${y} ${x+w},${y+4} V${H-P.b} Z" fill="${after?TEAL:BLUE}"/>`;
+  s+=`<text x="${x+w/2}" y="${y-6}" text-anchor="middle" font-size="11.5" font-weight="700" fill="#334155">${fmt(d.o)}</text>`;
+  s+=`<text x="${x+w/2}" y="${H-P.b+17}" text-anchor="middle" font-size="11.5" fill="#64748b">${d.m}</text>`;
+  s+=`<rect class="hit" data-i="${i}" x="${P.l+i*bw}" y="${P.t}" width="${bw}" height="${H-P.t-P.b}" fill="transparent"/>`;});
+ s+=`<line x1="${P.l}" x2="${W-P.r}" y1="${ya}" y2="${ya}" stroke="#0f172a" stroke-dasharray="4 4" stroke-width="1"/><text x="${W-P.r}" y="${ya-6}" text-anchor="end" font-size="11" fill="#0f172a" font-weight="600">Mar–Jul average 154</text>`;
+ s+='</svg>';host.innerHTML=s;const t=tipFor(host);
+ host.querySelectorAll('.hit').forEach(h=>{h.addEventListener('mousemove',e=>{const d=months[h.dataset.i];showTip(t,host,e,`<b>${d.m==='Oct*'?'Oct (1–25)':d.m} 2026</b><br>${fmt(d.o,1)} orders a day<br>₹${fmt(d.s)} sales a day`);});h.addEventListener('mouseleave',()=>t.style.opacity=0);});
+ const lg=document.createElement('div');lg.className='legend';lg.style.marginTop='10px';lg.innerHTML=`<span><i class="sw" style="background:${BLUE}"></i>Mar–Jul (stock close to buyers)</span><span><i class="sw" style="background:${TEAL}"></i>Aug–Oct (stock moved away)</span>`;host.appendChild(lg);
+})();
+
+// ---- horizontal paired bars ----
+function pairBars(hostId,rows,a,b,max,unit,labA,labB){const host=document.getElementById(hostId);host.className='chart';let h='';
+ rows.forEach((r,i)=>{h+=`<div class="hbar"><div class="lab">${r.z}${r.sub?`<small>${r.sub}</small>`:''}</div><div class="bars">
+ <div class="brow" data-i="${i}"><div class="bfill" style="width:${Math.max(0.4,r[a]/max*85)}%;background:${BLUE}"></div>${fmt(r[a],unit==='%'?0:1)}${unit}</div>
+ <div class="brow" data-i="${i}"><div class="bfill" style="width:${Math.max(0.4,r[b]/max*85)}%;background:${TEAL}"></div>${fmt(r[b],unit==='%'?0:1)}${unit}</div></div></div>`;});
+ host.innerHTML=h;const t=tipFor(host);
+ host.querySelectorAll('.brow').forEach(el=>{el.addEventListener('mousemove',e=>{const r=rows[el.dataset.i];showTip(t,host,e,`<b>${r.z}</b><br>${labA}: ${fmt(r[a],unit==='%'?0:1)}${unit}<br>${labB}: ${fmt(r[b],unit==='%'?0:1)}${unit}`);});el.addEventListener('mouseleave',()=>t.style.opacity=0);});}
+pairBars('c2',zones,'mj','oct',37,'','Mar–Jul','October (1–25)');
+// ---- stock vs orders, Mar–Jul and October, with gap badge ----
+(function(){const host=document.getElementById('c3');host.className='chart';
+ const gapB=g=>g<=-5?`<span class="b b-red">Short ${fmt(g)} pts</span>`:(g>=5?`<span class="b b-pur">Extra +${fmt(g)} pts</span>`:`<span class="b b-grn">Balanced</span>`);
+ const pair=(o,s,max)=>`<div class="bars"><div class="brow"><div class="bfill" style="width:${Math.max(0.6,o/max*78)}%;background:${BLUE}"></div>${fmt(o)}%</div><div class="brow"><div class="bfill" style="width:${Math.max(0.6,s/max*78)}%;background:${TEAL}"></div>${fmt(s)}%</div></div>`;
+ let h='';
+ sv.forEach((r,i)=>{const R=Math.round,g1=R(r.smj)-R(r.omj),g2=R(r.soc)-R(r.ooc);
+  h+=`<div class="gaprow" data-i="${i}"><div class="lab">${r.z}${r.sub?`<small>${r.sub}</small>`:''}</div>
+  <div class="gcell" data-p="Mar–Jul">${pair(r.omj,r.smj,60)}<div class="gb">${gapB(g1)}</div></div>
+  <div class="gcell" data-p="October">${pair(r.ooc,r.soc,60)}<div class="gb">${gapB(g2)}</div></div></div>`;});
+ host.innerHTML=h.replace(/Short -(\d+)/g,'Short −$1');const t=tipFor(host);
+ host.querySelectorAll('.gaprow').forEach(el=>{el.addEventListener('mousemove',e=>{const r=sv[el.dataset.i];showTip(t,host,e,`<b>${r.z}</b><br>Mar–Jul: ${fmt(r.omj,1)}% of orders · ${fmt(r.smj,1)}% of stock<br>October: ${fmt(r.ooc,1)}% of orders · ${fmt(r.soc,1)}% of stock`);});el.addEventListener('mouseleave',()=>t.style.opacity=0);});
+})();
+
+// ---- table: orders by region ----
+(function(){const tb=document.getElementById('t2');let h='';
+ const pct=v=>v===null?'<span class="b b-neu">No local stock</span>':`${v}%`;
+ zones.forEach(r=>{const ch=r.ch;const cls=ch<=-35?'b-red':(ch<=-20?'b-amb':'b-neu');
+  h+=`<tr><td><span class="zn">${r.z}</span>${r.sub?`<span class="zs">${r.sub}</span>`:''}</td><td class="n">${fmt(r.mj,1)}</td><td class="n">${fmt(r.aug,1)}</td><td class="n">${fmt(r.sep,1)}</td><td class="n stat">${fmt(r.oct,1)}</td><td class="n"><span class="b ${cls}">${ch}%</span></td><td class="n">${pct(r.lmj)}</td><td class="n">${pct(r.loct)}</td></tr>`;});
+ h+=`<tr class="tot"><td>All India</td><td class="n">${fmt(total.mj,1)}</td><td class="n">${fmt(total.aug,1)}</td><td class="n">${fmt(total.sep,1)}</td><td class="n">${fmt(total.oct,1)}</td><td class="n"><span class="b b-red">−38%</span></td><td class="n">${total.lmj}%</td><td class="n">${total.loct}%</td></tr>`;
+ tb.innerHTML=h.replace(/>-(\d+)%/g,'>−$1%');})();
+
+// ---- table: days of stock ----
+(function(){const st=(s,d)=>s===0?'<span class="b b-red">No stock</span>':d<7?'<span class="b b-red">Critical</span>':d<15?'<span class="b b-amb">Low</span>':d<=60?'<span class="b b-grn">OK</span>':'<span class="b b-pur">Excess</span>';
+ let h='';const T={n4:0,o4:0,n8:0,o8:0};
+ stock.forEach(r=>{['n4','o4','n8','o8'].forEach(k=>T[k]+=r[k]);
+  h+=`<tr><td class="zn">${r.z}</td><td class="n">${fmt(r.n4,1)}</td><td class="n">${fmt(r.o4,1)}</td><td class="n stat">${fmt(r.s4)}</td><td class="n">${r.s4?fmt(r.d4,1):'–'}</td><td>${st(r.s4,r.d4)}</td><td class="n sep">${fmt(r.n8,1)}</td><td class="n">${fmt(r.o8,1)}</td><td class="n stat">${fmt(r.s8)}</td><td class="n">${r.s8?fmt(r.d8,1):'–'}</td><td>${st(r.s8,r.d8)}</td></tr>`;});
+ h+=`<tr class="tot"><td>All India</td><td class="n">${fmt(T.n4,1)}</td><td class="n">${fmt(T.o4,1)}</td><td class="n">2,713</td><td class="n">31.3</td><td></td><td class="n sep">${fmt(T.n8,1)}</td><td class="n">${fmt(T.o8,1)}</td><td class="n">1,505</td><td class="n">17.0</td><td></td></tr>`;
+ document.getElementById('t3').innerHTML=h;})();
+
+// ---- stock gap bars ----
+const gapd={ '800g':[['Maharashtra','22% of orders',600,4,0.2],['Hyderabad','15% of orders',525,10,0.6],['Bengaluru','18% of orders',444,74,5.0],['North & Central','19% of orders · no warehouse',465,0,0.0],['East & North-East','7% of orders · no warehouse',159,0,0.0],['Tamil Nadu','10% of orders',264,1029,116.9],['Kerala','9% of orders',192,388,60.6]],
+ '400g':[['Maharashtra','22% of orders',636,153,7.2],['Hyderabad','15% of orders',576,273,14.2],['Bengaluru','18% of orders',504,320,19.0],['North & Central','19% of orders · no warehouse',312,0,0.0],['East & North-East','7% of orders · no warehouse',126,0,0.0],['Tamil Nadu','10% of orders',258,1611,187.3],['Kerala','9% of orders',189,356,56.5]]};
+function gapBars(id,rows){const host=document.getElementById(id);host.className='chart';let h='';
+ rows.forEach(([z,sub,need,have,days],i)=>{const gap=have-need;const short=gap<0;
+  const pct=short?have/need*100:100;
+  h+=`<div class="grow" data-i="${i}"><div class="lab">${z}<small>${sub}</small></div>
+  <div class="gtrack ${short?'':'ok'}"><div class="gfill" style="width:${pct}%;${short?'':'background:#00a88a'}"></div></div>
+  <div class="gnums">${short?`<span class="short">Short ${fmt(-gap)} units</span><br>has ${fmt(have)} of ${fmt(need)} needed · ${have?fmt(days,1)+' days left':'no stock'}`:`<span class="extra">Extra ${fmt(gap)} units</span><br>has ${fmt(have)} vs ${fmt(need)} needed · ${fmt(days,0)} days`}</div></div>`;});
+ host.innerHTML=h;const t=tipFor(host);
+ host.querySelectorAll('.grow').forEach(el=>{el.addEventListener('mousemove',e=>{const r=rows[el.dataset.i];showTip(t,host,e,`<b>${r[0]}</b><br>Needed (30 days): ${fmt(r[2])}<br>Available: ${fmt(r[3])}<br>${r[3]-r[2]<0?'Short':'Extra'}: ${fmt(Math.abs(r[3]-r[2]))}`);});el.addEventListener('mouseleave',()=>t.style.opacity=0);});}
+gapBars('gap8',gapd['800g']);gapBars('gap4',gapd['400g']);
+
+// ---- ads vs stock: change by region, coloured by stock situation ----
+(function(){const rows=[['Hyderabad',-56,'lost'],['Maharashtra',-42,'lost'],['Tamil Nadu',-40,'lost'],['Bengaluru',-37,'lost'],['North & Central',-21,'none'],['Kerala',-18,'gain'],['East & North-East',-14,'none']];
+ const col={lost:'#dc2626',none:'#64748b',gain:'#00a88a'};const lab={lost:'lost nearby stock',none:'no warehouse nearby, no change',gain:'gained nearby stock'};
+ const host=document.getElementById('cA');host.className='chart';let h='';
+ rows.forEach(([z,c,k],i)=>{h+=`<div class="chg" data-i="${i}"><div class="lab">${z}</div><div class="cbar"><div class="cfill" style="width:${Math.abs(c)/60*85}%;background:${col[k]}"></div>−${Math.abs(c)}%</div></div>`;});
+ host.innerHTML=h;const t=tipFor(host);
+ host.querySelectorAll('.chg').forEach(el=>{el.addEventListener('mousemove',e=>{const r=rows[el.dataset.i];showTip(t,host,e,`<b>${r[0]}</b><br>Orders per day: −${Math.abs(r[1])}% (Oct vs Mar–Jul)<br>Stock: ${lab[r[2]]}`);});el.addEventListener('mouseleave',()=>t.style.opacity=0);});})();
+</script>
+</body>
+</html>
